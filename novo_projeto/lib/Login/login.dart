@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 fontWeight: FontWeight.bold),
           ),
           const Text(
-            "Login to you account",
+            "Login to your account",
             style: TextStyle(
                 color: Colors.black,
                 fontSize: 44.0,
