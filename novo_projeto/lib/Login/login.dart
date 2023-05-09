@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +11,26 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  //Função de Login
+  static Future<User?> loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == "user-not-found") {
+        print("No user found for that email");
+      }
+    }
+
+    return user;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -37,9 +59,11 @@ class _LoginScreenState extends State<LoginScreen> {
           const TextField(
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecoration(
-              hintText: "User Email",
-              prefixIcon: Icon(Icons.mail, color: Colors.black,)
-            ),
+                hintText: "User Email",
+                prefixIcon: Icon(
+                  Icons.mail,
+                  color: Colors.black,
+                )),
           ),
           const SizedBox(
             height: 26.0,
@@ -58,7 +82,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           const Text(
             "Don't remember you password?",
-            style: TextStyle(color: Colors.blue,),
+            style: TextStyle(
+              color: Colors.blue,
+            ),
           ),
           const SizedBox(
             height: 88.0,
@@ -70,10 +96,13 @@ class _LoginScreenState extends State<LoginScreen> {
               elevation: 0.0,
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0)
+                  borderRadius: BorderRadius.circular(12.0)),
+              onPressed: () {},
+              child: const Text(
+                "Login",
+                style: TextStyle(color: Colors.white, fontSize: 18),
               ),
-              onPressed: (){},
-              child: const Text("Login", style: TextStyle(color: Colors.white, fontSize: 18),),),
+            ),
           ),
         ],
       ),
